@@ -35,7 +35,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        <partial name="_LoginPartial" />
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto topnav">
                 <li class="nav-item active">
@@ -50,12 +50,12 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-page="/Contact">Contact</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link btn btn-light text-black" type="button" href="#" data-toggle="modal" data-target="#myModal"><strong>Sign In</strong></a>                  
+                <!-- <li class="nav-item">
+                    <a class="nav-link btn btn-light text-black" asp-page="/Account/Login" type="button" data-toggle="modal" data-target="#myModal"><strong>Sign In</strong></a>                  
                 </li> &nbsp; &nbsp;
                 <li class="nav-item">
-                    <a class="nav-link btn btn-light text-black" type="button" href="#" data-toggle="modal" data-target="#myModal"><strong>Register</strong></a>
-                </li>
+                    <a class="nav-link btn btn-light text-black"  asp-page="/Account/Register" type="button"  data-toggle="modal" data-target="#myModal"><strong>Register</strong></a>
+                </li> -->
             </ul>
         </div>
     </nav>
