@@ -28,15 +28,9 @@ namespace ThesisManagement.Models
         [Column("varchar")]
         public string ProjectDescription { get; set; }
 
-
-        [Required]
-        [ForeignKey(nameof(Project.Subject))]
-        public int SubjectId { get; set; }
-
-
         [Required]
         [ForeignKey(nameof(Project.Student))]
-        public Guid UserId { get; set; }
+        public string EnrollmentID { get; set; }
 
         [Display(Name = " Start Date ")]
         [Required]
@@ -48,26 +42,7 @@ namespace ThesisManagement.Models
 
         public DateTime EndDate { get; set; }
 
-        /* 
- Professor ID(FK to Faculty → UserID)(int)
- Mentor ID(FK to Faculty → UserID)(int)
- Completion Percentage 
-         #region Navigation properties to the Subject Model
 
-         public ICollection<Subject> Subjects { get; set; }
-         #endregion
-
-         #region Navigation properties to the Student Model
-
-         public ICollection<Student> Students { get; set; }
-         #endregion
-        */
-
-        #region Navigational Properties to the Faculty Model (1:0 mapping)
-
-        public Subject Subject { get; set; }
-
-        #endregion
         #region Navigational Properties to the Student Model (1:0 mapping)
 
         public Student Student { get; set; }

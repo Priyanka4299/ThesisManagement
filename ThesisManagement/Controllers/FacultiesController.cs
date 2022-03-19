@@ -27,7 +27,7 @@ namespace ThesisManagement.Controllers
         }
 
         // GET: Faculties/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -36,7 +36,7 @@ namespace ThesisManagement.Controllers
 
             var faculty = await _context.Faculties
                 .Include(f => f.User)
-                .FirstOrDefaultAsync(m => m.UserId == id);
+                .FirstOrDefaultAsync(m => m.FacultyId == id);
             if (faculty == null)
             {
                 return NotFound();
@@ -48,7 +48,7 @@ namespace ThesisManagement.Controllers
         // GET: Faculties/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "DisplayName");
+            ViewData["UserID"] = new SelectList(_context.Users, "Id", "DisplayName");
             return View();
         }
 
@@ -57,21 +57,20 @@ namespace ThesisManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,FacultyType")] Faculty faculty)
+        public async Task<IActionResult> Create([Bind("UserID,FacultyId,FacultyType")] Faculty faculty)
         {
             if (ModelState.IsValid)
             {
-                faculty.UserId = Guid.NewGuid();
                 _context.Add(faculty);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "DisplayName", faculty.UserId);
+            ViewData["UserID"] = new SelectList(_context.Users, "Id", "DisplayName", faculty.UserID);
             return View(faculty);
         }
 
         // GET: Faculties/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -83,7 +82,7 @@ namespace ThesisManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "DisplayName", faculty.UserId);
+            ViewData["UserID"] = new SelectList(_context.Users, "Id", "DisplayName", faculty.UserID);
             return View(faculty);
         }
 
@@ -92,9 +91,9 @@ namespace ThesisManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("UserId,FacultyType")] Faculty faculty)
+        public async Task<IActionResult> Edit(string id, [Bind("UserID,FacultyId,FacultyType")] Faculty faculty)
         {
-            if (id != faculty.UserId)
+            if (id != faculty.FacultyId)
             {
                 return NotFound();
             }
@@ -108,7 +107,7 @@ namespace ThesisManagement.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FacultyExists(faculty.UserId))
+                    if (!FacultyExists(faculty.FacultyId))
                     {
                         return NotFound();
                     }
@@ -119,12 +118,12 @@ namespace ThesisManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "DisplayName", faculty.UserId);
+            ViewData["UserID"] = new SelectList(_context.Users, "Id", "DisplayName", faculty.UserID);
             return View(faculty);
         }
 
         // GET: Faculties/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -133,7 +132,7 @@ namespace ThesisManagement.Controllers
 
             var faculty = await _context.Faculties
                 .Include(f => f.User)
-                .FirstOrDefaultAsync(m => m.UserId == id);
+                .FirstOrDefaultAsync(m => m.FacultyId == id);
             if (faculty == null)
             {
                 return NotFound();
@@ -145,7 +144,7 @@ namespace ThesisManagement.Controllers
         // POST: Faculties/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var faculty = await _context.Faculties.FindAsync(id);
             _context.Faculties.Remove(faculty);
@@ -153,9 +152,9 @@ namespace ThesisManagement.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FacultyExists(Guid id)
+        private bool FacultyExists(string id)
         {
-            return _context.Faculties.Any(e => e.UserId == id);
+            return _context.Faculties.Any(e => e.FacultyId == id);
         }
     }
 }

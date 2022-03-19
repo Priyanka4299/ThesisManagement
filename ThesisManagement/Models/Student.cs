@@ -12,12 +12,12 @@ namespace ThesisManagement.Models
         ///     Mapped to the ID column of the Identity User
         /// </summary>
         [Display(Name = "User ID")]
-        [Key]
         [ForeignKey(nameof(Student.User))]
         public Guid UserId { get; set; }
 
 
         [Display(Name = "Student Enrollment ID")]
+        [Key]
         [Required(ErrorMessage = "{0} cannot be empty.")]
         [StringLength(12, ErrorMessage = "{0} should contain {1} characters.")]
         [MinLength(12, ErrorMessage = "{0} should contain {1} characters.")]
@@ -35,11 +35,7 @@ namespace ThesisManagement.Models
         public MyIdentityUser User { get; set; }
 
         #endregion
-        #region Navigational Properties to the Project model (1:1 mapping)
-
-        public Project User1 { get; set; }
-
-        #endregion
+        
 
     }
 }
