@@ -19,13 +19,13 @@ namespace ThesisManagement.Models
         [Display(Name = "Title of the Project")]
         [Required]
         [StringLength(50)]
-        [Column("varchar")]
+        
         public string ProjectTitle { get; set; }
 
         [Display(Name = "Description of the Project")]
         [Required]
         [StringLength(50)]
-        [Column("varchar")]
+        
         public string ProjectDescription { get; set; }
 
         [Required]

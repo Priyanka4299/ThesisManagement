@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,91 +10,90 @@ using ThesisManagement.Models;
 
 namespace ThesisManagement.Controllers
 {
-   
-    public class StudentsController : Controller
+    public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public StudentsController(ApplicationDbContext context)
+        public ProjectsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Students
+        // GET: Projects
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Students.Include(s => s.User);
+            var applicationDbContext = _context.Projects.Include(p => p.Student);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Students/Details/5
-        public async Task<IActionResult> Details(string id)
+        // GET: Projects/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var student = await _context.Students
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.EnrollmentID == id);
-            if (student == null)
+            var project = await _context.Projects
+                .Include(p => p.Student)
+                .FirstOrDefaultAsync(m => m.ProjectId == id);
+            if (project == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(project);
         }
 
-        // GET: Students/Create
+        // GET: Projects/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "DisplayName");
+            ViewData["EnrollmentID"] = new SelectList(_context.Students, "EnrollmentID", "EnrollmentID");
             return View();
         }
 
-        // POST: Students/Create
+        // POST: Projects/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,EnrollmentID,ParentName")] Student student)
+        public async Task<IActionResult> Create([Bind("ProjectId,ProjectTitle,ProjectDescription,EnrollmentID,StartDate,EndDate")] Project project)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(student);
+                _context.Add(project);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "DisplayName", student.UserId);
-            return View(student);
+            ViewData["EnrollmentID"] = new SelectList(_context.Students, "EnrollmentID", "EnrollmentID", project.EnrollmentID);
+            return View(project);
         }
 
-        // GET: Students/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        // GET: Projects/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
+            var project = await _context.Projects.FindAsync(id);
+            if (project == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "DisplayName", student.UserId);
-            return View(student);
+            ViewData["EnrollmentID"] = new SelectList(_context.Students, "EnrollmentID", "EnrollmentID", project.EnrollmentID);
+            return View(project);
         }
 
-        // POST: Students/Edit/5
+        // POST: Projects/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UserId,EnrollmentID,ParentName")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectId,ProjectTitle,ProjectDescription,EnrollmentID,StartDate,EndDate")] Project project)
         {
-            if (id != student.EnrollmentID)
+            if (id != project.ProjectId)
             {
                 return NotFound();
             }
@@ -104,12 +102,12 @@ namespace ThesisManagement.Controllers
             {
                 try
                 {
-                    _context.Update(student);
+                    _context.Update(project);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.EnrollmentID))
+                    if (!ProjectExists(project.ProjectId))
                     {
                         return NotFound();
                     }
@@ -120,43 +118,43 @@ namespace ThesisManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "DisplayName", student.UserId);
-            return View(student);
+            ViewData["EnrollmentID"] = new SelectList(_context.Students, "EnrollmentID", "EnrollmentID", project.EnrollmentID);
+            return View(project);
         }
 
-        // GET: Students/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        // GET: Projects/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var student = await _context.Students
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.EnrollmentID == id);
-            if (student == null)
+            var project = await _context.Projects
+                .Include(p => p.Student)
+                .FirstOrDefaultAsync(m => m.ProjectId == id);
+            if (project == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(project);
         }
 
-        // POST: Students/Delete/5
+        // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var student = await _context.Students.FindAsync(id);
-            _context.Students.Remove(student);
+            var project = await _context.Projects.FindAsync(id);
+            _context.Projects.Remove(project);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool StudentExists(string id)
+        private bool ProjectExists(int id)
         {
-            return _context.Students.Any(e => e.EnrollmentID == id);
+            return _context.Projects.Any(e => e.ProjectId == id);
         }
     }
 }

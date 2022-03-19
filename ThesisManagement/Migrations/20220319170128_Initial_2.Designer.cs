@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThesisManagement.Data;
 
 namespace ThesisManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220319170128_Initial_2")]
+    partial class Initial_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,13 +269,17 @@ namespace ThesisManagement.Migrations
 
                     b.Property<string>("ProjectDescription")
                         .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("varchar");
 
                     b.Property<string>("ProjectTitle")
                         .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("varchar");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -325,8 +331,9 @@ namespace ThesisManagement.Migrations
                         .HasColumnType("int")
                         .HasColumnName("remark");
 
-                    b.Property<DateTime>("ReviewOn")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("ReviewOn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReviewedBy")
                         .IsRequired()
@@ -338,16 +345,18 @@ namespace ThesisManagement.Migrations
                         .HasColumnType("nvarchar(60)")
                         .HasColumnName("varchar");
 
-                    b.Property<DateTime>("SubmissionDueOn")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("SubmissionDueOn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SubmissionFile")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<DateTime>("SubmissionOn")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("SubmissionOn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SubmissionId");
 

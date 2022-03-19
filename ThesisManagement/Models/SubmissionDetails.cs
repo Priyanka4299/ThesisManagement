@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ThesisManagement.Models
@@ -29,17 +30,23 @@ namespace ThesisManagement.Models
         [Display(Name = "Sumission Due Date:")]
         [Required(ErrorMessage = "Required")]
         [RegularExpression(@"(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$", ErrorMessage = "Invalid date format.")]
-        public string SubmissionDueOn { get; set; }
+        public DateTime SubmissionDueOn { get; set; }
 
 
         [Display(Name = "Submission Date:")]
         [Required(ErrorMessage = "Required")]
         [RegularExpression(@"(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$", ErrorMessage = "Invalid date format.")]
-        public string SubmissionOn { get; set; }
+        public DateTime SubmissionOn { get; set; }
 
 
         [Required(ErrorMessage = "Upload Submission File")]
+        [StringLength(150)]
         public string SubmissionFile { get; set; }
+
+        [StringLength(60)]
+        public string FileContentType { get; set; }
+
+
 
 
         [Required]
@@ -48,7 +55,7 @@ namespace ThesisManagement.Models
 
         [Required]
         [RegularExpression(@"(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$", ErrorMessage = "Invalid date format.")]
-        public string ReviewOn { get; set; }
+        public DateTime ReviewOn { get; set; }
 
 
         [Display(Name = "Remarks of submission")]
@@ -56,6 +63,8 @@ namespace ThesisManagement.Models
         [MaxLength(3)]
         [Column("remark")]
         public int Remarks { get; set; }
+
+
         #region Navigational Properties to the Project Model (1:0 mapping)
 
         public Project Project { get; set; }

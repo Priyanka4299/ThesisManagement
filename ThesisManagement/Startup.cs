@@ -116,8 +116,8 @@ namespace ThesisManagement
                     pattern: "{controller}/{action=Index}/{id?}");
 
             });
-            ApplicationDbContextSeed.SeedIdentityRolesAsync(roleFaculty).Wait();
-            ApplicationDbContextSeed.SeedIdentityUserAsync(userFaculty).Wait();
+            //ApplicationDbContextSeed.SeedIdentityRolesAsync(roleFaculty).Wait();
+            //ApplicationDbContextSeed.SeedIdentityUserAsync(userFaculty).Wait();
         }
     }
 }

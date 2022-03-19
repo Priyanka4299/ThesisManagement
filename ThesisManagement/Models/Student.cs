@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ThesisManagement.Models;
+using ThesisManagement.Models.Enums;
 
 namespace ThesisManagement.Models
 {
@@ -23,14 +25,14 @@ namespace ThesisManagement.Models
         [MinLength(12, ErrorMessage = "{0} should contain {1} characters.")]
         public string EnrollmentID { get; set; }
 
+       
 
         [Display(Name = "Name of the Parent / Guardian")]
         [MinLength(2, ErrorMessage = "{0} should have at least {1} characters.")]
         [StringLength(60, ErrorMessage = "{0} should not contain more than {1} characters.")]
         public string ParentName { get; set; }
 
-
-        #region Navigational Properties to the MyIdentityUser model (1:1 mapping)
+               #region Navigational Properties to the MyIdentityUser model (1:1 mapping)
 
         public MyIdentityUser User { get; set; }
 
