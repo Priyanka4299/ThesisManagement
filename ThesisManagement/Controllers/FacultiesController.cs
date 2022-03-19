@@ -11,7 +11,7 @@ using ThesisManagement.Models;
 
 namespace ThesisManagement.Controllers
 {
-    
+    [Authorize(Roles = "Administrator")]
     public class FacultiesController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -1,10 +1,35 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using ThesisManagement.Models
+@using ThesisManagement.Models.Enums
 @inject SignInManager<MyIdentityUser> SignInManager
 @inject UserManager<MyIdentityUser> UserManager
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
+@if (SignInManager.IsSignedIn(User) @*&& user != null*@)
 {
+@*    <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @user.DisplayName!</a>
+        </li>
+
+        @if (await _userManager.IsInRoleAsync(user, IdentityRoles.Administrator.ToString()))
+        {
+            <li>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Faculties" asp-action="Index">Faculty</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
+            </li>
+        }
+
+        @if (await _userManager.IsInRoleAsync(user, IdentityRoles.Administrator.ToString())
+             || await _userManager.IsInRoleAsync(user, IdentityRoles.Student.ToString()))
+        {
+
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Index">Students</a>
+            </li>
+        }*@
+
     @*<li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         More
