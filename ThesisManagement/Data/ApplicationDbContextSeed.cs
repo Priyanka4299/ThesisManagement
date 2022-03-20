@@ -11,7 +11,7 @@ namespace ThesisManagement.Data
 
         public static async Task SeedIdentityRolesAsync(RoleManager<MyIdentityRole> rolefaculty)
         {
-            foreach (IdentityRoles role in Enum.GetValues(typeof(IdentityRoles)))
+            foreach (MyIdentityRoles role in Enum.GetValues(typeof(MyIdentityRoles)))
             {
                 string rolename = role.ToString();
                 if (!await rolefaculty.RoleExistsAsync(rolename))
@@ -41,8 +41,8 @@ namespace ThesisManagement.Data
                 };
                 await userfaculty.CreateAsync(user, password: "Password@123");
                 await userfaculty.AddToRolesAsync(user, new string[] {
-                    IdentityRoles.Administrator.ToString(),
-                    IdentityRoles.Faculty.ToString()
+                    MyIdentityRoles.Administrator.ToString(),
+                    MyIdentityRoles.Faculty.ToString()
                 });
             }
 
@@ -60,7 +60,7 @@ namespace ThesisManagement.Data
                 };
                 await userfaculty.CreateAsync(user, password: "Asdf@123");
                 await userfaculty.AddToRolesAsync(user, new string[] {
-                    IdentityRoles.Faculty.ToString()
+                    MyIdentityRoles.Faculty.ToString()
                 });
             }
 

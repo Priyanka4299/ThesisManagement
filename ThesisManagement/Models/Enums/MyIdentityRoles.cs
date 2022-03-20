@@ -2,7 +2,7 @@
 namespace ThesisManagement.Models.Enums
 {
    
-        public enum IdentityRoles
+        public enum MyIdentityRoles
     {
         Administrator,
         Faculty,
