@@ -31,14 +31,17 @@
             </li>
          }            
 
-       @* @if (await _userManager.IsInRoleAsync(user, MyIdentityRoleNames.Faculty.ToString()))
+        @if (await _userManager.IsInRoleAsync(user, MyIdentityRoleNames.Faculty.ToString()))
         {
             <li>
                 <a class="nav-link text-dark" asp-area="" asp-controller="SubmissionDetails" asp-action="Index">SubmissionDetaila</a>
             </li>
+             <li>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
+            </li>
           
         }
-*@
+
 
         <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @User.Identity.Name!</a>

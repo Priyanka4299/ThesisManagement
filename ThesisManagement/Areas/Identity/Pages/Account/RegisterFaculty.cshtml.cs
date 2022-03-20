@@ -18,15 +18,17 @@ using ThesisManagement.Models.Enums;
 
 namespace ThesisManagement.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
-    public class RegisterModel : PageModel
+    [Authorize(Roles = "Administrator")]
+    public class RegisterFacultyModel : PageModel
     {
+        private const string StandardPASSWORD = "Password!123";
+
         private readonly SignInManager<MyIdentityUser> _signInManager;
         private readonly UserManager<MyIdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
-        public RegisterModel(
+        public RegisterFacultyModel(
             UserManager<MyIdentityUser> userManager,
             SignInManager<MyIdentityUser> signInManager,
             ILogger<RegisterModel> logger,
@@ -52,16 +54,7 @@ namespace ThesisManagement.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
+            #region Additional Properties as defined in MyIdentityUser Model
 
             [Display(Name = "Display Name")]
             [Required(ErrorMessage = "{0} cannot be empty.")]
@@ -78,7 +71,7 @@ namespace ThesisManagement.Areas.Identity.Pages.Account
             [Required(ErrorMessage = "Please indicate which of these best describes your Gender.")]
             [Display(Name = "Gender")]
             public MyIdentityGenders Gender { get; set; }
-
+            #endregion
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -101,7 +94,7 @@ namespace ThesisManagement.Areas.Identity.Pages.Account
                     DateOfBirth = Input.DateOfBirth,
                     Gender=Input.Gender
                 };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var result = await _userManager.CreateAsync(user, StandardPASSWORD);
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRolesAsync(user, new string[] {
