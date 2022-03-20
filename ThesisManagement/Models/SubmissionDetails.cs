@@ -29,13 +29,13 @@ namespace ThesisManagement.Models
 
         [Display(Name = "Sumission Due Date:")]
         [Required(ErrorMessage = "Required")]
-        [RegularExpression(@"(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$", ErrorMessage = "Invalid date format.")]
+ 
         public DateTime SubmissionDueOn { get; set; }
 
 
         [Display(Name = "Submission Date:")]
         [Required(ErrorMessage = "Required")]
-        [RegularExpression(@"(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$", ErrorMessage = "Invalid date format.")]
+
         public DateTime SubmissionOn { get; set; }
 
 
@@ -61,8 +61,8 @@ namespace ThesisManagement.Models
         [Display(Name = "Remarks of submission")]
         [Required]
         [MaxLength(3)]
-        [Column("remark")]
-        public int Remarks { get; set; }
+        
+        public string Remarks { get; set; }
 
 
         #region Navigational Properties to the Project Model (1:0 mapping)

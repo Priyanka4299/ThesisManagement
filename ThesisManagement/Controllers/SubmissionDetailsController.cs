@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using ThesisManagement.Data;
 using ThesisManagement.Models;
 
@@ -20,11 +21,16 @@ namespace ThesisManagement.Controllers
 
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _config;
+        private readonly ILogger<SubmissionDetailsController> _logger;
 
-        public SubmissionDetailsController(ApplicationDbContext context, IConfiguration config)
+        public SubmissionDetailsController(
+            ApplicationDbContext context,
+            IConfiguration config,
+            ILogger<SubmissionDetailsController> logger)
         {
             _context = context;
             _config = config;
+            _logger = logger;
         }
 
         // GET: SubmissionDetails
