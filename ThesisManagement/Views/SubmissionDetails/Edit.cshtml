@@ -34,9 +34,22 @@
                 <span asp-validation-for="SubmissionOn" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SubmissionFile" class="control-label"></label>
-
-                <input asp-for="SubmissionFile" class="form-control" />
+                <label asp-for="SubmissionFile" style="width: 100%;"></label>
+                @if (string.IsNullOrEmpty(ViewBag.FileUrl))
+                {
+                    <img id="filePic" src="">
+                         
+                }
+                else
+                {
+                    <img id="filePic" src="@ViewBag.FileUrl">
+                         
+                }
+                <input type="file" asp-for="SubmissionFile"
+                       accept=".docx, .pdf"
+                       class="form-control"
+                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                       onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
                 <span asp-validation-for="SubmissionFile" class="text-danger"></span>
             </div>
             <div class="form-group">
