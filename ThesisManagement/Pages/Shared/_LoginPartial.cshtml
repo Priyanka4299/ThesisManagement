@@ -2,50 +2,52 @@
 @using ThesisManagement.Models
 @using ThesisManagement.Models.Enums
 @inject SignInManager<MyIdentityUser> SignInManager
-@inject UserManager<MyIdentityUser> UserManager
-<ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User) @*&& user != null*@)
-{
-@*    <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @user.DisplayName!</a>
-        </li>
+@inject UserManager<MyIdentityUser> _userManager
 
-        @if (await _userManager.IsInRoleAsync(user, IdentityRoles.Administrator.ToString()))
+    @{
+    var user = await _userManager.GetUserAsync(User);
+}
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User) && user != null)
+{
+   
+
+        @if (await _userManager.IsInRoleAsync(user, MyIdentityRoleNames.Administrator.ToString()))
         {
             <li>
                 <a class="nav-link text-dark" asp-area="" asp-controller="Faculties" asp-action="Index">Faculty</a>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
-            </li>
         }
 
-        @if (await _userManager.IsInRoleAsync(user, IdentityRoles.Administrator.ToString())
-             || await _userManager.IsInRoleAsync(user, IdentityRoles.Student.ToString()))
+        @if (await _userManager.IsInRoleAsync(user, MyIdentityRoleNames.Student.ToString()))
         {
 
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Index">Students</a>
+            @*<li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="SubmissionDetails" asp-action="Index">SubmissionDetails</a>
+            </li>*@
+            <li>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
             </li>
-        }*@
+         }            
 
-    @*<li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        More
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" asp-page="/Privacy">Privacy Policy</a>
-                        <a class="dropdown-item" asp-page="/Contact">Contact</a>
-                        <a class="dropdown-item" asp-page="/AboutUs">About Us</a>                       
-                    </div>
-                </li>*@
-    <li class="nav-item">
+       @* @if (await _userManager.IsInRoleAsync(user, MyIdentityRoleNames.Faculty.ToString()))
+        {
+            <li>
+                <a class="nav-link text-dark" asp-area="" asp-controller="SubmissionDetails" asp-action="Index">SubmissionDetaila</a>
+            </li>
+          
+        }
+*@
+
+        <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @User.Identity.Name!</a>
     </li>
     <li class="nav-item">
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >
+          
             <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+
         </form>
     </li>
 }

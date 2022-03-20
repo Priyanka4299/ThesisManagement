@@ -11,7 +11,7 @@ namespace ThesisManagement.Data
 
         public static async Task SeedIdentityRolesAsync(RoleManager<MyIdentityRole> rolefaculty)
         {
-            foreach (MyIdentityRoles role in Enum.GetValues(typeof(MyIdentityRoles)))
+            foreach (MyIdentityRoleNames role in Enum.GetValues(typeof(MyIdentityRoleNames)))
             {
                 string rolename = role.ToString();
                 if (!await rolefaculty.RoleExistsAsync(rolename))
@@ -27,40 +27,42 @@ namespace ThesisManagement.Data
         {
             MyIdentityUser user;
 
-            user = await userfaculty.FindByNameAsync("admin@guniuni.com");
+            user = await userfaculty.FindByNameAsync("admin@uni.com");
             if (user == null)
             {
                 user = new MyIdentityUser()
                 {
-                    UserName = "admin@guniuni.com",
-                    Email = "admin@guniuni.com",
+                    UserName = "admin@uni.com",
+                    Email = "admin@uni.com",
                     EmailConfirmed = true,
                     DisplayName = "The Admin User",
                     DateOfBirth = new DateTime(2000, 1, 1),
+                    Gender = MyIdentityGenders.Female
                     
                 };
                 await userfaculty.CreateAsync(user, password: "Password@123");
                 await userfaculty.AddToRolesAsync(user, new string[] {
-                    MyIdentityRoles.Administrator.ToString(),
-                    MyIdentityRoles.Faculty.ToString()
+                    MyIdentityRoleNames.Administrator.ToString(),
+                    MyIdentityRoleNames.Faculty.ToString()
                 });
             }
 
-            user = await userfaculty.FindByNameAsync("faculty@guniuni.com");
+            user = await userfaculty.FindByNameAsync("faculty@uni.com");
             if (user == null)
             {
                 user = new MyIdentityUser()
                 {
-                    UserName = "faculty@guniuni.com",
-                    Email = "faculty@guniuni.com",
+                    UserName = "faculty@uni.com",
+                    Email = "faculty@uni.com",
                     EmailConfirmed = true,
                     DisplayName = "The Faculty",
                     DateOfBirth = new DateTime(2000, 1, 1),
-                    
+                    Gender = MyIdentityGenders.Female
+
                 };
                 await userfaculty.CreateAsync(user, password: "Asdf@123");
                 await userfaculty.AddToRolesAsync(user, new string[] {
-                    MyIdentityRoles.Faculty.ToString()
+                    MyIdentityRoleNames.Faculty.ToString()
                 });
             }
 
