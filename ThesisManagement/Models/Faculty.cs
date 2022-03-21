@@ -1,19 +1,29 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ThesisManagement.Models;
+using ThesisManagement.Models.Enums;
 
 namespace ThesisManagement.Models
 {
     [Table("Faculty")]
     public class Faculty
     {
-        /// <summary>
-        ///     Mapped to the ID column of the Identity User
-        /// </summary>
+    
         [Display(Name = "User ID")]
-        [Key]
         [ForeignKey(nameof(Faculty.User))]
-        public Guid UserId { get; set; }
+        public Guid UserID { get; set; }
+
+        [Required]
+        [Key]
+        [Display(Name ="Faculty ID")]
+        [StringLength(20, ErrorMessage ="{0} cannot be more than {1}")]
+        public string FacultyId { get; set; }
+        
+        [Required(ErrorMessage ="{0} Cannot be empty.")]
+        [Display(Name ="Faculty Name")]
+        public string DisplayName { get; set; } 
+        
 
         [Display(Name = "Type of Faculty")]
         [Required(ErrorMessage = "{0} cannot be empty.")]
@@ -21,10 +31,19 @@ namespace ThesisManagement.Models
         [StringLength(25, ErrorMessage = "{0} cannot contain more than {1} characters.")]
         public string FacultyType { get; set; }
 
+        
+        
+       
 
-        #region Navigational Properties to the MyIdentityUser model (1:1 mapping)
+
+        #region
 
         public MyIdentityUser User { get; set; }
+
+        //[ForeignKey(nameof(Faculty.Student))]
+        //public int UserId { get; set; }
+
+        //public Student Student { get; set; }
 
         #endregion
     }

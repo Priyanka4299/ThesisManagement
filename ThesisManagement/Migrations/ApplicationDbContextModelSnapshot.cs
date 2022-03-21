@@ -122,15 +122,26 @@ namespace ThesisManagement.Migrations
 
             modelBuilder.Entity("ThesisManagement.Models.Faculty", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("FacultyId")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FacultyType")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.HasKey("UserId");
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("FacultyId");
+
+                    b.HasIndex("UserID")
+                        .IsUnique();
 
                     b.ToTable("Faculty");
                 });
@@ -195,8 +206,8 @@ namespace ThesisManagement.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsAdminUser")
-                        .HasColumnType("bit");
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -254,47 +265,33 @@ namespace ThesisManagement.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EnrollmentID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(12)");
+
                     b.Property<string>("ProjectDescription")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("varchar");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ProjectTitle")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("varchar");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("ProjectId");
 
-                    b.HasIndex("SubjectId")
-                        .IsUnique();
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("EnrollmentID");
 
                     b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("ThesisManagement.Models.Student", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("EnrollmentID")
-                        .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
@@ -302,27 +299,15 @@ namespace ThesisManagement.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.HasKey("UserId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("EnrollmentID");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("ThesisManagement.Models.Subject", b =>
-                {
-                    b.Property<int>("SubjectId")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(5)
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("SubjectName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.HasKey("SubjectId");
-
-                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("ThesisManagement.Models.SubmissionDetail", b =>
@@ -335,14 +320,12 @@ namespace ThesisManagement.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Remarks")
-                        .HasMaxLength(3)
-                        .HasColumnType("int")
-                        .HasColumnName("remark");
-
-                    b.Property<string>("ReviewOn")
+                    b.Property<string>("Remarks")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReviewOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ReviewedBy")
                         .IsRequired()
@@ -354,17 +337,16 @@ namespace ThesisManagement.Migrations
                         .HasColumnType("nvarchar(60)")
                         .HasColumnName("varchar");
 
-                    b.Property<string>("SubmissionDueOn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("SubmissionDueOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SubmissionFile")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
-                    b.Property<string>("SubmissionOn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("SubmissionOn")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("SubmissionId");
 
@@ -429,7 +411,7 @@ namespace ThesisManagement.Migrations
                 {
                     b.HasOne("ThesisManagement.Models.MyIdentityUser", "User")
                         .WithOne("Faculty")
-                        .HasForeignKey("ThesisManagement.Models.Faculty", "UserId")
+                        .HasForeignKey("ThesisManagement.Models.Faculty", "UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -438,21 +420,13 @@ namespace ThesisManagement.Migrations
 
             modelBuilder.Entity("ThesisManagement.Models.Project", b =>
                 {
-                    b.HasOne("ThesisManagement.Models.Subject", "Subject")
-                        .WithOne("Project")
-                        .HasForeignKey("ThesisManagement.Models.Project", "SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ThesisManagement.Models.Student", "Student")
-                        .WithOne("User1")
-                        .HasForeignKey("ThesisManagement.Models.Project", "UserId")
+                        .WithMany()
+                        .HasForeignKey("EnrollmentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Student");
-
-                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("ThesisManagement.Models.Student", b =>
@@ -487,16 +461,6 @@ namespace ThesisManagement.Migrations
             modelBuilder.Entity("ThesisManagement.Models.Project", b =>
                 {
                     b.Navigation("SubmissionDetail");
-                });
-
-            modelBuilder.Entity("ThesisManagement.Models.Student", b =>
-                {
-                    b.Navigation("User1");
-                });
-
-            modelBuilder.Entity("ThesisManagement.Models.Subject", b =>
-                {
-                    b.Navigation("Project");
                 });
 #pragma warning restore 612, 618
         }

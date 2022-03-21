@@ -6,36 +6,68 @@
     <title>@ViewData["Title"] - ThesisManagement</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        /* CSS for navigation bar*/
+        .topnav a:hover {
+             border-bottom: 3px solid red;
+         }
+         /* CSS for navigation bar closes*/
+
+         /* CSS for About Us page*/
+         body {
+              font-family: Arial, Helvetica, sans-serif;
+              margin: 0;
+         }
+         .about-section {
+              padding: 50px;
+              text-align: center;
+              background-color: #327a85;
+              color: white;
+         }
+
+         /* CSS for About Us page closes*/
+
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">ThesisManagement</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav>
-    </header>
+    	<nav class="navbar navbar-expand-lg navbar-light bg-info">
+        <a class="navbar-brand" href="#">Thesis Management Portal</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div>
+            @*<ul class="navbar-nav ml-auto topnav">
+                <li class="nav-item active">
+                    <a class="nav-link" asp-page="/Index">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/AboutUs">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/Privacy">Privacy Policy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/Contact">Contact</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link btn btn-light text-black" asp-page="/Account/Login" type="button" data-toggle="modal" data-target="#myModal"><strong>Sign In</strong></a>                  
+                </li> &nbsp; &nbsp;
+                <li class="nav-item">
+                    <a class="nav-link btn btn-light text-black"  asp-page="/Account/Register" type="button"  data-toggle="modal" data-target="#myModal"><strong>Register</strong></a>
+                </li> -->
+            </ul>*@
+            <partial name="_LoginPartial" />
+        </div>
+    </nav>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
+    <br/>
+    <br/>
+    <br/>
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2022 - ThesisManagement - <a asp-area="" asp-page="/Privacy">Privacy</a>

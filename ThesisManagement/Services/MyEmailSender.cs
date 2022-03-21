@@ -43,6 +43,13 @@ namespace ThesisManagement.Services
         public Task SendEmailAsync(
             string email, string subject, string htmlMessage)
         {
+            var sendEmails = _config.GetValue<bool>("MySmtpSettings:SendEmails");
+            if (!sendEmails)
+            {
+                // If not enabled, let's treat the task as completed.
+                return Task.CompletedTask;
+            }
+
             var smtpServer = _config.GetValue<string>("MySmtpSettings:SmtpServer");
             var smtpServerSSL = _config.GetValue<bool>("MySmtpSettings:SmtpServerSSL");
             var smtpPort = _config.GetValue<int>("MySmtpSettings:SmtpPort");

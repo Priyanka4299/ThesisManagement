@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using ThesisManagement.Models;
+using ThesisManagement.Models.Enums;
 
 namespace ThesisManagement.Areas.Identity.Pages.Account
 {
@@ -74,6 +75,9 @@ namespace ThesisManagement.Areas.Identity.Pages.Account
             [PersonalData]                                      // for GDPR Complaince
             //[Column(TypeName = "smalldatetime")]
             public DateTime DateOfBirth { get; set; }
+            [Required(ErrorMessage = "Please indicate which of these best describes your Gender.")]
+            [Display(Name = "Gender")]
+            public MyIdentityGenders Gender { get; set; }
 
         }
 
@@ -94,12 +98,16 @@ namespace ThesisManagement.Areas.Identity.Pages.Account
                     UserName = Input.Email,
                     Email = Input.Email,
                     DisplayName = Input.DisplayName,
-                    DateOfBirth = Input.DateOfBirth
+                    DateOfBirth = Input.DateOfBirth,
+                    Gender=Input.Gender
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    await _userManager.AddToRolesAsync(user, new string[] {
+                        MyIdentityRoleNames.Student.ToString()
+                    });
+                    _logger.LogInformation("User created a Student account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

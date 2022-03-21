@@ -10,11 +10,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 using ThesisManagement.Data;
 using ThesisManagement.Models;
 using ThesisManagement.Services;
+
 
 namespace ThesisManagement
 {
@@ -74,7 +76,11 @@ namespace ThesisManagement
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            ILogger<Startup> logger,
+            UserManager<MyIdentityUser> userFaculty,
+            RoleManager<MyIdentityRole> roleFaculty)
         {
             if (env.IsDevelopment())
             {
@@ -110,6 +116,8 @@ namespace ThesisManagement
                     pattern: "{controller}/{action=Index}/{id?}");
 
             });
+            ApplicationDbContextSeed.SeedIdentityRolesAsync(roleFaculty).Wait();
+            ApplicationDbContextSeed.SeedIdentityUserAsync(userFaculty).Wait();
         }
     }
 }

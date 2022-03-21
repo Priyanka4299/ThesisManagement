@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ThesisManagement.Migrations
@@ -29,7 +29,6 @@ namespace ThesisManagement.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "smalldatetime", nullable: false),
-                    IsAdminUser = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -48,19 +47,6 @@ namespace ThesisManagement.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Subjects",
-                columns: table => new
-                {
-                    SubjectId = table.Column<int>(type: "int", maxLength: 5, nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SubjectName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subjects", x => x.SubjectId);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,15 +159,16 @@ namespace ThesisManagement.Migrations
                 name: "Faculty",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FacultyId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FacultyType = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Faculty", x => x.UserId);
+                    table.PrimaryKey("PK_Faculty", x => x.FacultyId);
                     table.ForeignKey(
-                        name: "FK_Faculty_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Faculty_AspNetUsers_UserID",
+                        column: x => x.UserID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -191,13 +178,13 @@ namespace ThesisManagement.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EnrollmentID = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ParentName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.UserId);
+                    table.PrimaryKey("PK_Students", x => x.EnrollmentID);
                     table.ForeignKey(
                         name: "FK_Students_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -213,8 +200,7 @@ namespace ThesisManagement.Migrations
                     ProjectId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     varchar = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SubjectId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EnrollmentID = table.Column<string>(type: "nvarchar(12)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -222,16 +208,10 @@ namespace ThesisManagement.Migrations
                 {
                     table.PrimaryKey("PK_Projects", x => x.ProjectId);
                     table.ForeignKey(
-                        name: "FK_Projects_Students_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Projects_Students_EnrollmentID",
+                        column: x => x.EnrollmentID,
                         principalTable: "Students",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Projects_Subjects_SubjectId",
-                        column: x => x.SubjectId,
-                        principalTable: "Subjects",
-                        principalColumn: "SubjectId",
+                        principalColumn: "EnrollmentID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -301,14 +281,19 @@ namespace ThesisManagement.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_SubjectId",
-                table: "Projects",
-                column: "SubjectId",
+                name: "IX_Faculty_UserID",
+                table: "Faculty",
+                column: "UserID",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_UserId",
+                name: "IX_Projects_EnrollmentID",
                 table: "Projects",
+                column: "EnrollmentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_UserId",
+                table: "Students",
                 column: "UserId",
                 unique: true);
 
@@ -350,9 +335,6 @@ namespace ThesisManagement.Migrations
 
             migrationBuilder.DropTable(
                 name: "Students");
-
-            migrationBuilder.DropTable(
-                name: "Subjects");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

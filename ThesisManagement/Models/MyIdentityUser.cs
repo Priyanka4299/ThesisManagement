@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ThesisManagement.Models.Enums;
 
 namespace ThesisManagement.Models
 {
@@ -17,14 +18,14 @@ namespace ThesisManagement.Models
 
         [Display(Name = "Date of Birth")]
         [Required]
-        [PersonalData]                                      // for GDPR Complaince
+        [PersonalData]                                      
         [Column(TypeName = "smalldatetime")]
         public DateTime DateOfBirth { get; set; }
 
-
-        [Display(Name = "Is Admin User?")]
         [Required]
-        public bool IsAdminUser { get; set; }
+        [Display(Name = "Gender")]
+        [PersonalData]
+        public MyIdentityGenders Gender { get; set; }
 
 
         #region Navigational Properties to the Student Model (1:0 mapping)
